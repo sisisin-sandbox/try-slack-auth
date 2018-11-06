@@ -11,8 +11,7 @@ passport.use(
       clientSecret: CLIENT_SECRET,
     },
     (accessToken, scopes, team, bot, user, done) => {
-      console.log(accessToken, scopes, team, bot, user, done);
-      return done(null, user);
+      return done(null, { accessToken, scopes, team, bot, user });
     },
   ),
 );
@@ -33,6 +32,7 @@ app.get(
   '/auth/slack/callback',
   passport.authenticate('slack', { failureRedirect: '/login' }),
   function(req, res) {
+    console.log(req.user);
     res.redirect('/');
   },
 );
